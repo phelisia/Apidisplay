@@ -6,9 +6,11 @@ import retrofit2.http.Path
 import java.sql.RowId
 
 interface ApiInterface {
-    @GET("/post")
+    @GET("/posts")
     fun getPosts():Call<List<Post>>
-//    @GET("POST/{postId}")
-//    fun getPostById(@Path("postId")postId: Int)
+    @GET("/posts/{postId}")
+    fun getPostsById(@Path("postId")postId: Int):Call<Post>
+    @GET("/posts/{postId}/{comments}")
+    fun getPostsByIdcomments(@Path("postId/comments")postId: Int):Call<Post>
 
 }

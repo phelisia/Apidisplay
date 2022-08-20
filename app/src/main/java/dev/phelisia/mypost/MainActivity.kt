@@ -15,29 +15,40 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fetchPosts()
     }
-    fun fetchPosts(){
-   var apiclient=ApiClient.buildApiClient(ApiInterface::class.java)
-   var request=apiclient.getPosts()
-   request.enqueue(object : Callback<List<Post>>{
-       override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
-           if (response.isSuccessful){
-               var posts=response.body()
-               Toast.makeText(baseContext,"fetched ${posts!!.size} posts",Toast.LENGTH_LONG).show()
-               var adapter=PostAdapter(baseContext,posts)
-               Log.d("tag",posts.toString())
-               binding.rvadapter.adapter=adapter
-               binding.rvadapter.layoutManager=LinearLayoutManager(baseContext)
-           }
-       }
 
-       override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+    fun fetchPosts() {
+        var apiclient = ApiClient.buildApiClient(ApiInterface::class.java)
+        var request = apiclient.getPosts()
+        request.enqueue(object : Callback<List<Post>> {
+            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
+                if (response.isSuccessful) {
+                    var posts = response.body()
+                    if (posts != null) {
+                        display(posts)
 
-       }
+                    }
 
-   })
+                }
+            }
+
+            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+                Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
+
+            }
+
+        })
     }
+
+    fun display(postslist: List<Post>) {
+        binding.rvadapter.layoutManager = LinearLayoutManager(this)
+        var postAdapter = PostAdapter(postslist)
+        binding.rvadapter.adapter = postAdapter
+
+
+    }
+
 }

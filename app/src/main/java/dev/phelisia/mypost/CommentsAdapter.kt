@@ -1,19 +1,19 @@
 package dev.phelisia.mypost
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dev.phelisia.mypost.databinding.PostListItemBinding
+import dev.phelisia.mypost.databinding.CommentsListItemBinding
 
-class PostAdapter(var postlist:List<Post>):RecyclerView.Adapter<PostViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        var binding=PostListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return PostViewHolder(binding)
+
+class CommentsAdapter (var postlist:List<Post>): RecyclerView.Adapter<CommentsViewHolder>()  {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
+        var binding= CommentsListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return CommentsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CommentsViewHolder, position: Int) {
         var currentPost = postlist.get(position)
         with(holder.binding){
             tvUserid.text = currentPost.userId.toString()
@@ -22,19 +22,19 @@ class PostAdapter(var postlist:List<Post>):RecyclerView.Adapter<PostViewHolder>(
             tvbody.text = currentPost.body
             var context=holder.itemView.context
             holder.binding.cvpost.setOnClickListener {
-                val intent=Intent(context,commentActivity::class.java)
+                val intent= Intent(context,commentActivity::class.java)
                 intent.putExtra("POST_ID",currentPost.id)
                 context.startActivity(intent)
             }
         }
-        }
+
+    }
 
     override fun getItemCount(): Int {
         return postlist.size
     }
-    }
 
+}
+class CommentsViewHolder(var binding: CommentsListItemBinding ):RecyclerView.ViewHolder(binding.root){
 
-class  PostViewHolder(var binding:PostListItemBinding):
-    RecyclerView.ViewHolder(binding.root)
-
+}
