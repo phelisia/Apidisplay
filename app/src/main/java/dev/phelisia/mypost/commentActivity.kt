@@ -3,6 +3,7 @@ package dev.phelisia.mypost
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.phelisia.mypost.databinding.ActivityCommentBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,6 +51,26 @@ class commentActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
     fun fetchpostbyIdcomments(){
+        var retro=ApiClient.buildApiClient((ApiInterface::class.java))
+        var request=retro.getComments()
+        request.enqueue(object :Callback<List<Comment>>{
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if(response.isSuccessful){
+                    var commentss=response.body()?: emptyList()
+                    displayComments(commentss)
 
+                }
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                Toast.makeText(baseContext,t.message,Toast.LENGTH_LONG).show()
+            }
+
+            })
+            }
+    fun displayComments(commentList:List<Comment>){
+        val commentsAdapter=CommentsAdapter(commentList)
+        binding.rvcomments.layoutManager=LinearLayoutManager(this)
+        binding.rvcomments.adapter=commentsAdapter
     }
-}
+        }

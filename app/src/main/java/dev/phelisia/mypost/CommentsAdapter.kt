@@ -7,31 +7,28 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.phelisia.mypost.databinding.CommentsListItemBinding
 
 
-class CommentsAdapter (var postlist:List<Post>): RecyclerView.Adapter<CommentsViewHolder>()  {
+class CommentsAdapter (var commentlist:List<Comment>): RecyclerView.Adapter<CommentsViewHolder>()  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
         var binding= CommentsListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return CommentsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CommentsViewHolder, position: Int) {
-        var currentPost = postlist.get(position)
+        var currentComment = commentlist.get(position)
         with(holder.binding){
-            tvUserid.text = currentPost.userId.toString()
-            tvTitle.text = currentPost.title
-            tvId.text = currentPost.id.toString()
-            tvbody.text = currentPost.body
-            var context=holder.itemView.context
-            holder.binding.cvpost.setOnClickListener {
-                val intent= Intent(context,commentActivity::class.java)
-                intent.putExtra("POST_ID",currentPost.id)
-                context.startActivity(intent)
-            }
+            tvPostIdComment.text=currentComment.postId.toString()
+            tvIdComment.text=currentComment.id.toString()
+            tvNameComment.text=currentComment.name
+            tvCommentsbody.text=currentComment.body
+            tvEmailComment.text=currentComment.email
+
+
         }
 
     }
 
     override fun getItemCount(): Int {
-        return postlist.size
+        return commentlist.size
     }
 
 }
